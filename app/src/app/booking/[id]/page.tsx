@@ -18,43 +18,17 @@ export default async function KonfirmasiBookingPage({ params }: BookingPageProps
 
   const supabase = await createClient();
 
-  // Query detail pesanan beserta jadwal, film, studio, dan kursi
-  const { data: pesanan, error } = await supabase
+  console.log(`[Konfirmasi Booking] Mengambil pesanan id: ${id} untuk user: ${user.email}`);
+
+  // 1. Ambil data pesanan utama (sesuai DATABASE-SUPABASE.md Bagian 7: gunakan query terpisah untuk relasi foreign key komposit)
+  const { data: pesanan, error: errPesanan } = await supabase
     .from("pesanan")
-    .select(`
-      id,
-      kode_booking,
-      status,
-      batas_waktu,
-      user_id,
-      jadwal:jadwal_id (
-        id,
-        mulai,
-        selesai,
-        film:film_id (
-          id,
-          judul
-        ),
-        studio:studio_id (
-          id,
-          nama
-        )
-      ),
-      pesanan_kursi (
-        id,
-        aktif,
-        kursi:kursi_id (
-          id,
-          kode,
-          baris,
-          kolom
-        )
-      )
-    `)
+    .select("id, kode_booking, status, batas_waktu, user_id, jadwal_id")
     .eq("id", id)
     .single();
 
-  if (error || !pesanan) {
+  if (errPesanan || !pesanan) {
+    console.error("[Konfirmasi Booking] Gagal memuat pesanan:", errPesanan);
     return (
       <div
         style={{
@@ -86,22 +60,65 @@ export default async function KonfirmasiBookingPage({ params }: BookingPageProps
     );
   }
 
-  const jadwalData = Array.isArray(pesanan.jadwal) ? pesanan.jadwal[0] : pesanan.jadwal;
-  const filmData = Array.isArray(jadwalData?.film) ? jadwalData.film[0] : jadwalData?.film;
-  const studioData = Array.isArray(jadwalData?.studio) ? jadwalData.studio[0] : jadwalData?.studio;
+  // 2. Ambil data jadwal, film, dan studio
+  const { data: jadwal, error: errJadwal } = await supabase
+    .from("jadwal")
+    .select(`
+      id,
+      mulai,
+      selesai,
+      film:film_id (
+        id,
+        judul
+      ),
+      studio:studio_id (
+        id,
+        nama
+      )
+    `)
+    .eq("id", pesanan.jadwal_id)
+    .single();
 
-  // Ekstrak kode kursi
-  const rawKursi = (pesanan.pesanan_kursi || []).map((pk: any) => {
-    return Array.isArray(pk.kursi) ? pk.kursi[0] : pk.kursi;
-  });
+  if (errJadwal) {
+    console.error("[Konfirmasi Booking] Gagal memuat jadwal:", errJadwal);
+  }
 
-  const kursiList: string[] = rawKursi
-    .filter(Boolean)
-    .sort((a: any, b: any) => {
-      if (a.baris === b.baris) return a.kolom - b.kolom;
-      return a.baris.localeCompare(b.baris);
-    })
-    .map((k: any) => k.kode);
+  // 3. Ambil kursi_id dari pesanan_kursi
+  const { data: pesananKursiList, error: errPK } = await supabase
+    .from("pesanan_kursi")
+    .select("kursi_id")
+    .eq("pesanan_id", id);
+
+  if (errPK) {
+    console.error("[Konfirmasi Booking] Gagal memuat pesanan_kursi:", errPK);
+  }
+
+  const kursiIds = (pesananKursiList || []).map((pk: any) => pk.kursi_id);
+
+  // 4. Ambil kode kursi dari tabel kursi
+  let kursiList: string[] = [];
+  if (kursiIds.length > 0) {
+    const { data: kursiRows, error: errKursi } = await supabase
+      .from("kursi")
+      .select("id, kode, baris, kolom")
+      .in("id", kursiIds);
+
+    if (errKursi) {
+      console.error("[Konfirmasi Booking] Gagal memuat kursi:", errKursi);
+    } else if (kursiRows) {
+      kursiList = kursiRows
+        .sort((a: any, b: any) => {
+          if (a.baris === b.baris) return a.kolom - b.kolom;
+          return a.baris.localeCompare(b.baris);
+        })
+        .map((k: any) => k.kode);
+    }
+  }
+
+  const filmData = Array.isArray(jadwal?.film) ? jadwal?.film[0] : jadwal?.film;
+  const studioData = Array.isArray(jadwal?.studio) ? jadwal?.studio[0] : jadwal?.studio;
+
+  console.log(`[Konfirmasi Booking Sukses] Kode: ${pesanan.kode_booking}, Kursi: ${kursiList.join(", ")}`);
 
   return (
     <div
@@ -117,8 +134,8 @@ export default async function KonfirmasiBookingPage({ params }: BookingPageProps
         batasWaktu={pesanan.batas_waktu}
         filmJudul={filmData?.judul || "Film"}
         studioNama={studioData?.nama || "Studio"}
-        jamMulai={jadwalData?.mulai || ""}
-        jamSelesai={jadwalData?.selesai || ""}
+        jamMulai={jadwal?.mulai || ""}
+        jamSelesai={jadwal?.selesai || ""}
         kursiList={kursiList}
         userEmail={user.email || ""}
       />
