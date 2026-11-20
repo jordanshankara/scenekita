@@ -29,13 +29,6 @@ type FilterStatus = "semua" | "ditahan" | "terkonfirmasi" | "batal";
 export function PesananSayaList({ initialOrders, userEmail }: PesananSayaListProps) {
   const [filter, setFilter] = useState<FilterStatus>("semua");
   const [copiedId, setCopiedId] = useState<string | null>(null);
-  const [now, setNow] = useState(Date.now());
-
-  // Tick timer tiap detik untuk memperbarui strip sisa waktu pada pesanan Ditahan
-  useEffect(() => {
-    const timer = setInterval(() => setNow(Date.now()), 1000);
-    return () => clearInterval(timer);
-  }, []);
 
   async function handleCopy(kode: string, id: string) {
     try {
@@ -191,14 +184,6 @@ export function PesananSayaList({ initialOrders, userEmail }: PesananSayaListPro
               batal: "Batal",
             };
 
-            // Hitung sisa waktu untuk pesanan Ditahan
-            const isDitahan = order.status === "ditahan";
-            const targetBatas = new Date(order.batasWaktu).getTime();
-            const diffSeconds = Math.max(0, Math.floor((targetBatas - now) / 1000));
-            const sisaMenit = Math.floor(diffSeconds / 60);
-            const sisaDetik = diffSeconds % 60;
-            const isExpired = diffSeconds <= 0;
-
             return (
               <div
                 key={order.id}
@@ -331,60 +316,8 @@ export function PesananSayaList({ initialOrders, userEmail }: PesananSayaListPro
                 </div>
 
                 {/* Strip Sisa Waktu Khusus Pesanan Ditahan */}
-                {isDitahan && (
-                  <div
-                    style={{
-                      backgroundColor: isExpired
-                        ? "rgba(240, 82, 82, 0.1)"
-                        : "rgba(245, 183, 59, 0.1)",
-                      border: `1px solid ${
-                        isExpired
-                          ? "rgba(240, 82, 82, 0.3)"
-                          : "rgba(245, 183, 59, 0.3)"
-                      }`,
-                      borderRadius: "var(--radius-control)",
-                      padding: "var(--space-3)",
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "var(--space-2)",
-                      fontSize: "12px",
-                    }}
-                  >
-                    <svg
-                      width="16"
-                      height="16"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke={
-                        isExpired
-                          ? "var(--color-status-error)"
-                          : "var(--color-status-warning)"
-                      }
-                      strokeWidth="1.75"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      aria-hidden="true"
-                    >
-                      <circle cx="12" cy="12" r="10" />
-                      <polyline points="12 6 12 12 16 14" />
-                    </svg>
-                    <span>
-                      {isExpired ? (
-                        <strong style={{ color: "var(--color-status-error)" }}>
-                          Batas waktu habis (Segera diproses batal)
-                        </strong>
-                      ) : (
-                        <>
-                          <span style={{ color: "var(--color-status-warning)" }}>
-                            Sisa waktu bayar di loket:{" "}
-                          </span>
-                          <strong style={{ color: "var(--color-text-primary)" }} className="tabular-nums">
-                            {sisaMenit}m {sisaDetik}s
-                          </strong>
-                        </>
-                      )}
-                    </span>
-                  </div>
+                {order.status === "ditahan" && (
+                  <SisaWaktuStrip batasWaktu={order.batasWaktu} />
                 )}
 
                 {/* Tombol Rincian Konfirmasi Booking */}
@@ -439,6 +372,122 @@ export function PesananSayaList({ initialOrders, userEmail }: PesananSayaListPro
           />
         </div>
       )}
+    </div>
+  );
+}
+
+function SisaWaktuStrip({ batasWaktu }: { batasWaktu: string }) {
+  const [mounted, setMounted] = useState(false);
+  const [diff, setDiff] = useState(0);
+
+  useEffect(() => {
+    setMounted(true);
+    function update() {
+      const now = Date.now();
+      const target = new Date(batasWaktu).getTime();
+      setDiff(Math.max(0, Math.floor((target - now) / 1000)));
+    }
+    update();
+    const timer = setInterval(update, 1000);
+    return () => clearInterval(timer);
+  }, [batasWaktu]);
+
+  if (!mounted) {
+    return (
+      <div
+        style={{
+          backgroundColor: "rgba(245, 183, 59, 0.1)",
+          border: "1px solid rgba(245, 183, 59, 0.3)",
+          borderRadius: "var(--radius-control)",
+          padding: "var(--space-3)",
+          display: "flex",
+          alignItems: "center",
+          gap: "var(--space-2)",
+          fontSize: "12px",
+        }}
+      >
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="var(--color-status-warning)"
+          strokeWidth="1.75"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          aria-hidden="true"
+        >
+          <circle cx="12" cy="12" r="10" />
+          <polyline points="12 6 12 12 16 14" />
+        </svg>
+        <span style={{ color: "var(--color-status-warning)" }}>
+          Menghitung sisa waktu...
+        </span>
+      </div>
+    );
+  }
+
+  const isExpired = diff <= 0;
+  const sisaMenit = Math.floor(diff / 60);
+  const sisaDetik = diff % 60;
+
+  return (
+    <div
+      style={{
+        backgroundColor: isExpired
+          ? "rgba(240, 82, 82, 0.1)"
+          : "rgba(245, 183, 59, 0.1)",
+        border: `1px solid ${
+          isExpired
+            ? "rgba(240, 82, 82, 0.3)"
+            : "rgba(245, 183, 59, 0.3)"
+        }`,
+        borderRadius: "var(--radius-control)",
+        padding: "var(--space-3)",
+        display: "flex",
+        alignItems: "center",
+        gap: "var(--space-2)",
+        fontSize: "12px",
+      }}
+    >
+      <svg
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke={
+          isExpired
+            ? "var(--color-status-error)"
+            : "var(--color-status-warning)"
+        }
+        strokeWidth="1.75"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        aria-hidden="true"
+      >
+        <circle cx="12" cy="12" r="10" />
+        <polyline points="12 6 12 12 16 14" />
+      </svg>
+      <span>
+        {isExpired ? (
+          <strong style={{ color: "var(--color-status-error)" }}>
+            Batas waktu habis (Segera diproses batal)
+          </strong>
+        ) : (
+          <>
+            <span style={{ color: "var(--color-status-warning)" }}>
+              Sisa waktu bayar di loket:{" "}
+            </span>
+            <strong
+              style={{ color: "var(--color-text-primary)" }}
+              className="tabular-nums"
+              suppressHydrationWarning
+            >
+              {sisaMenit}m {sisaDetik}s
+            </strong>
+          </>
+        )}
+      </span>
     </div>
   );
 }
