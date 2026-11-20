@@ -1,0 +1,196 @@
+@import "tailwindcss";
+
+/* =============================================
+   SceneKita Design System — Token CSS
+   Tailwind v4: pakai @theme inline untuk mapping
+   ============================================= */
+
+:root {
+  /* Warna Latar & Permukaan */
+  --color-bg-page: #0B0D12;
+  --color-bg-sidebar: #10131C;
+  --color-bg-input: #0F1219;
+  --color-surface-card: #141720;
+  --color-surface-elevated: #1B1F2B;
+  --color-surface-shimmer: #252A3A;
+
+  /* Warna Border */
+  --color-border-subtle: #1F2433;
+  --color-border-default: #242938;
+  --color-border-strong: #2E3548;
+  --color-border-secondary: #2F364B;
+
+  /* Warna Merek & Aksen */
+  --color-primary: #3F5CE0;
+  --color-primary-light: #6C84FF;
+  --color-secondary: #6E56CF;
+  --color-accent: #F5B73B;
+
+  /* Warna Teks */
+  --color-text-primary: #F4F6FB;
+  --color-text-muted: #9CA3B8;
+
+  /* Warna Status */
+  --color-status-success: #2ED47A;
+  --color-status-warning: #F5B73B;
+  --color-status-error: #F05252;
+  --color-status-info: #38BDF8;
+
+  /* Warna Kursi (SeatMap) */
+  --color-seat-available-bg: #1D274D;
+  --color-seat-available-border: #4A63C9;
+  --color-seat-selected-bg: #3F5CE0;
+  --color-seat-occupied-bg: #222634;
+
+  /* Tipografi */
+  --font-sans: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, sans-serif;
+
+  /* Skala Ukuran Font (minimum 14px) */
+  --text-h1-desktop: 2rem;
+  --text-h1-mobile: 1.5rem;
+  --text-h2-desktop: 1.5rem;
+  --text-h2-mobile: 1.25rem;
+  --text-h3: 1.125rem;
+  --text-body: 1rem;
+  --text-body-sm: 0.9375rem;
+  --text-caption: 0.875rem;
+
+  /* Spacing (kelipatan 4px dan 8px) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --space-16: 64px;
+
+  /* Grid & Kontainer */
+  --container-max: 1280px;
+  --gutter-mobile: 12px;
+  --gutter-tablet: 16px;
+  --gutter-desktop: 24px;
+  --touch-min: 44px;
+
+  /* Border Radius */
+  --radius-seat: 6px;
+  --radius-control: 10px;
+  --radius-poster: 12px;
+  --radius-card: 16px;
+  --radius-pill: 9999px;
+
+  /* Elevasi, Bayangan & Pendar */
+  --shadow-floating: 0 12px 32px rgba(0, 0, 0, 0.45);
+  --glow-screen: 0 0 40px rgba(63, 92, 224, 0.28);
+  --backdrop-modal: rgba(5, 7, 11, 0.75);
+  --overlay-poster: linear-gradient(to top, rgba(11, 13, 18, 0.92) 0%, rgba(11, 13, 18, 0) 55%);
+
+  /* Gerak */
+  --duration-fast: 150ms;
+  --duration-base: 240ms;
+  --ease-standard: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* =============================================
+   Tailwind v4 @theme — mapping token ke utilitas
+   ============================================= */
+@theme inline {
+  /* Warna */
+  --color-bg-page: var(--color-bg-page);
+  --color-bg-sidebar: var(--color-bg-sidebar);
+  --color-bg-input: var(--color-bg-input);
+  --color-surface-card: var(--color-surface-card);
+  --color-surface-elevated: var(--color-surface-elevated);
+  --color-surface-shimmer: var(--color-surface-shimmer);
+  --color-border-subtle: var(--color-border-subtle);
+  --color-border-default: var(--color-border-default);
+  --color-border-strong: var(--color-border-strong);
+  --color-border-secondary: var(--color-border-secondary);
+  --color-primary: var(--color-primary);
+  --color-primary-light: var(--color-primary-light);
+  --color-secondary: var(--color-secondary);
+  --color-accent: var(--color-accent);
+  --color-text-primary: var(--color-text-primary);
+  --color-text-muted: var(--color-text-muted);
+  --color-status-success: var(--color-status-success);
+  --color-status-warning: var(--color-status-warning);
+  --color-status-error: var(--color-status-error);
+  --color-status-info: var(--color-status-info);
+  --color-seat-available-bg: var(--color-seat-available-bg);
+  --color-seat-available-border: var(--color-seat-available-border);
+  --color-seat-selected-bg: var(--color-seat-selected-bg);
+  --color-seat-occupied-bg: var(--color-seat-occupied-bg);
+
+  /* Font */
+  --font-sans: var(--font-sans);
+
+  /* Border radius */
+  --radius-seat: var(--radius-seat);
+  --radius-control: var(--radius-control);
+  --radius-poster: var(--radius-poster);
+  --radius-card: var(--radius-card);
+  --radius-pill: var(--radius-pill);
+}
+
+/* =============================================
+   Base styles
+   ============================================= */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background-color: var(--color-bg-page);
+  color: var(--color-text-primary);
+  font-family: var(--font-sans);
+  font-size: var(--text-body);
+  line-height: 1.55;
+  min-height: 100dvh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Angka tabular untuk jam, kode booking, durasi */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Hormati prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Fokus ring global (aksesibilitas) */
+:focus-visible {
+  outline: 2px solid var(--color-primary-light);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Scrollbar tipis di desktop */
+@media (min-width: 1024px) {
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--color-bg-page);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-border-strong);
+    border-radius: var(--radius-pill);
+  }
+}
