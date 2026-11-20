@@ -93,7 +93,7 @@ export function SeatMap({
         <span
           style={{
             marginTop: "var(--space-2)",
-            fontSize: "12px",
+            fontSize: "var(--text-caption)",
             fontWeight: 700,
             letterSpacing: "0.2em",
             color: "var(--color-text-muted)",
@@ -256,8 +256,8 @@ export function SeatMap({
                             : `Pilih Kursi ${kursi.kode}`
                         }
                         style={{
-                          width: "42px",
-                          height: "42px",
+                          width: "44px",
+                          height: "44px",
                           borderRadius: "var(--radius-seat) var(--radius-seat) 4px 4px",
                           display: "flex",
                           flexDirection: "column",

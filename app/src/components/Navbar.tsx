@@ -97,7 +97,7 @@ export function Navbar() {
             <div
               style={{
                 width: "80px",
-                height: "32px",
+                height: "var(--touch-min)",
                 borderRadius: "var(--radius-control)",
                 backgroundColor: "var(--color-surface-elevated)",
                 opacity: 0.5,

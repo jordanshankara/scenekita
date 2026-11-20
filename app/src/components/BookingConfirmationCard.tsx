@@ -117,7 +117,7 @@ export function BookingConfirmationCard({
       >
         <span
           style={{
-            fontSize: "12px",
+            fontSize: "var(--text-caption)",
             fontWeight: 600,
             color: "var(--color-text-muted)",
             letterSpacing: "0.1em",
@@ -148,7 +148,7 @@ export function BookingConfirmationCard({
             display: "inline-flex",
             alignItems: "center",
             gap: "var(--space-2)",
-            height: "38px",
+            height: "var(--touch-min)",
             padding: "0 var(--space-4)",
             backgroundColor: copied ? "var(--color-status-success)" : "var(--color-surface-card)",
             color: copied ? "#0B0D12" : "var(--color-text-primary)",
@@ -201,7 +201,7 @@ export function BookingConfirmationCard({
           textAlign: "center",
         }}
       >
-        <span style={{ fontSize: "12px", color: "var(--color-status-warning)", fontWeight: 600 }}>
+        <span style={{ fontSize: "var(--text-caption)", color: "var(--color-status-warning)", fontWeight: 600 }}>
           Batas Waktu Pembayaran di Loket:
         </span>
         <div style={{ fontSize: "var(--text-body)", fontWeight: 700, color: "var(--color-text-primary)" }}>

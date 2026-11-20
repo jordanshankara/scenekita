@@ -233,14 +233,14 @@ export function AdminFilmManager({ initialFilms }: AdminFilmManagerProps) {
                       type="button"
                       onClick={() => openEditModal(f)}
                       style={{
-                        height: "36px",
-                        padding: "0 12px",
+                        height: "var(--touch-min)",
+                        padding: "0 16px",
                         backgroundColor: "var(--color-surface-elevated)",
                         border: "1px solid var(--color-border-secondary)",
                         color: "var(--color-text-primary)",
                         borderRadius: "var(--radius-control)",
-                        fontSize: "12px",
-                        fontWeight: 500,
+                        fontSize: "var(--text-caption)",
+                        fontWeight: 600,
                         cursor: "pointer",
                       }}
                     >

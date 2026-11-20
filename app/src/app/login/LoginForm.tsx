@@ -184,7 +184,7 @@ export default function LoginForm() {
               onClick={() => { setTab(t); setError(null); }}
               style={{
                 flex: 1,
-                height: "36px",
+                height: "var(--touch-min)",
                 borderRadius: "8px",
                 border: "none",
                 fontSize: "var(--text-caption)",

@@ -162,7 +162,7 @@ export function FilmScheduleDetail({ jadwalList }: FilmScheduleDetailProps) {
                         </span>
                         <span
                           style={{
-                            fontSize: "12px",
+                            fontSize: "var(--text-caption)",
                             color: "var(--color-text-muted)",
                           }}
                         >
@@ -205,7 +205,7 @@ export function FilmScheduleDetail({ jadwalList }: FilmScheduleDetailProps) {
                       </span>
                       <span
                         style={{
-                          fontSize: "12px",
+                          fontSize: "var(--text-caption)",
                           color: "var(--color-text-muted)",
                         }}
                         className="tabular-nums"

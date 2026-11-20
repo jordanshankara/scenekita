@@ -222,7 +222,7 @@ export function BookingForm({
           {/* Info Jadwal */}
           <div style={{ display: "flex", flexDirection: "column", gap: "var(--space-2)" }}>
             <div>
-              <span style={{ fontSize: "12px", color: "var(--color-text-muted)" }}>Film</span>
+              <span style={{ fontSize: "var(--text-caption)", color: "var(--color-text-muted)" }}>Film</span>
               <p style={{ margin: 0, fontWeight: 600, color: "var(--color-text-primary)", fontSize: "var(--text-body-sm)" }}>
                 {filmJudul}
               </p>
@@ -230,13 +230,13 @@ export function BookingForm({
 
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "var(--space-2)" }}>
               <div>
-                <span style={{ fontSize: "12px", color: "var(--color-text-muted)" }}>Studio</span>
+                <span style={{ fontSize: "var(--text-caption)", color: "var(--color-text-muted)" }}>Studio</span>
                 <p style={{ margin: 0, fontWeight: 600, color: "var(--color-text-primary)", fontSize: "var(--text-caption)" }}>
                   {studioNama}
                 </p>
               </div>
               <div>
-                <span style={{ fontSize: "12px", color: "var(--color-text-muted)" }}>Jam Tayang</span>
+                <span style={{ fontSize: "var(--text-caption)", color: "var(--color-text-muted)" }}>Jam Tayang</span>
                 <p style={{ margin: 0, fontWeight: 600, color: "var(--color-primary-light)", fontSize: "var(--text-caption)" }} className="tabular-nums">
                   {formatJam(jamMulai)} - {formatJam(jamSelesai)}
                 </p>
@@ -244,7 +244,7 @@ export function BookingForm({
             </div>
 
             <div>
-              <span style={{ fontSize: "12px", color: "var(--color-text-muted)" }}>Tanggal</span>
+              <span style={{ fontSize: "var(--text-caption)", color: "var(--color-text-muted)" }}>Tanggal</span>
               <p style={{ margin: 0, fontSize: "var(--text-caption)", color: "var(--color-text-primary)" }}>
                 {formatTanggalLengkap(jamMulai)}
               </p>
@@ -260,7 +260,7 @@ export function BookingForm({
                 Kursi Terpilih ({selectedKursi.length}/4)
               </span>
               {kursiSedangDitahan > 0 && (
-                <span style={{ fontSize: "12px", color: "var(--color-status-warning)" }}>
+                <span style={{ fontSize: "var(--text-caption)", color: "var(--color-status-warning)" }}>
                   ({kursiSedangDitahan} sedang ditahan)
                 </span>
               )}
@@ -319,7 +319,7 @@ export function BookingForm({
               <circle cx="12" cy="12" r="10" />
               <polyline points="12 6 12 12 16 14" />
             </svg>
-            <div style={{ fontSize: "13px", lineHeight: 1.45 }}>
+            <div style={{ fontSize: "var(--text-caption)", lineHeight: 1.45 }}>
               <strong style={{ color: "var(--color-status-warning)", display: "block" }}>
                 Batas Waktu Penahanan 60 Menit
               </strong>
@@ -367,7 +367,7 @@ export function BookingForm({
           {/* Keterangan Tanpa Pembayaran di Aplikasi */}
           <p
             style={{
-              fontSize: "12px",
+              fontSize: "var(--text-caption)",
               color: "var(--color-text-muted)",
               margin: 0,
               textAlign: "center",

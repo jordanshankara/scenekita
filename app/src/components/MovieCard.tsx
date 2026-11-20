@@ -184,7 +184,10 @@ export function MovieCard({ film, tanggalTerpilih }: MovieCardProps) {
                       key={j.id}
                       title="Jadwal sudah lewat"
                       style={{
-                        padding: "6px 10px",
+                        display: "inline-flex",
+                        alignItems: "center",
+                        minHeight: "var(--touch-min)",
+                        padding: "0 10px",
                         borderRadius: "var(--radius-control)",
                         backgroundColor: "var(--color-surface-elevated)",
                         color: "var(--color-text-muted)",
@@ -206,7 +209,10 @@ export function MovieCard({ film, tanggalTerpilih }: MovieCardProps) {
                     key={j.id}
                     href={`/jadwal/${j.id}/kursi`}
                     style={{
-                      padding: "6px 12px",
+                      display: "inline-flex",
+                      alignItems: "center",
+                      minHeight: "var(--touch-min)",
+                      padding: "0 12px",
                       borderRadius: "var(--radius-control)",
                       backgroundColor: "var(--color-surface-elevated)",
                       color: "var(--color-primary-light)",

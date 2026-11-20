@@ -388,7 +388,7 @@ export function AdminOrdersManager({ jadwalOptions }: AdminOrdersManagerProps) {
                         <div style={{ fontWeight: 600, color: "var(--color-text-primary)" }}>
                           {order.nama || "Penonton"}
                         </div>
-                        <div style={{ color: "var(--color-text-muted)", fontSize: "12px" }}>
+                        <div style={{ color: "var(--color-text-muted)", fontSize: "var(--text-caption)" }}>
                           {order.email}
                         </div>
                       </td>
@@ -415,7 +415,7 @@ export function AdminOrdersManager({ jadwalOptions }: AdminOrdersManagerProps) {
                       <td style={{ padding: "14px 16px" }}>
                         {isDitahan ? (
                           isExpired ? (
-                            <span style={{ color: "var(--color-status-error)", fontWeight: 600, fontSize: "12px" }}>
+                            <span style={{ color: "var(--color-status-error)", fontWeight: 600, fontSize: "var(--text-caption)" }}>
                               Kedaluwarsa
                             </span>
                           ) : (
@@ -430,20 +430,20 @@ export function AdminOrdersManager({ jadwalOptions }: AdminOrdersManagerProps) {
 
                       {/* Aksi */}
                       <td style={{ padding: "14px 16px", textAlign: "right" }}>
-                        <div style={{ display: "inline-flex", gap: "var(--space-2)", justifyContent: "flex-end" }}>
+                        <div style={{ display: "inline-flex", gap: "var(--space-2)", justifyContent: "flex-end", alignItems: "center" }}>
                           {/* Tombol Konfirmasi Loket */}
                           {canConfirm && (
                             <button
                               type="button"
                               onClick={() => openModal("konfirmasi", order)}
                               style={{
-                                height: "36px",
-                                padding: "0 14px",
+                                height: "var(--touch-min)",
+                                padding: "0 16px",
                                 backgroundColor: "var(--color-primary)",
                                 color: "var(--color-text-primary)",
                                 border: "none",
                                 borderRadius: "var(--radius-control)",
-                                fontSize: "12px",
+                                fontSize: "var(--text-caption)",
                                 fontWeight: 600,
                                 cursor: "pointer",
                                 transition: "all var(--duration-fast)",
@@ -459,13 +459,13 @@ export function AdminOrdersManager({ jadwalOptions }: AdminOrdersManagerProps) {
                               type="button"
                               onClick={() => openModal("batal", order)}
                               style={{
-                                height: "36px",
-                                padding: "0 12px",
+                                height: "var(--touch-min)",
+                                padding: "0 14px",
                                 backgroundColor: "var(--color-surface-elevated)",
                                 color: "var(--color-status-error)",
                                 border: "1px solid var(--color-status-error)",
                                 borderRadius: "var(--radius-control)",
-                                fontSize: "12px",
+                                fontSize: "var(--text-caption)",
                                 fontWeight: 600,
                                 cursor: "pointer",
                                 transition: "all var(--duration-fast)",
@@ -476,7 +476,7 @@ export function AdminOrdersManager({ jadwalOptions }: AdminOrdersManagerProps) {
                           )}
 
                           {!canConfirm && !canCancel && (
-                            <span style={{ color: "var(--color-text-muted)", fontSize: "12px" }}>
+                            <span style={{ color: "var(--color-text-muted)", fontSize: "var(--text-caption)" }}>
                               Final (Batal)
                             </span>
                           )}
@@ -585,7 +585,7 @@ export function AdminOrdersManager({ jadwalOptions }: AdminOrdersManagerProps) {
                 gap: "var(--space-3)",
                 alignItems: "flex-start",
                 cursor: "pointer",
-                fontSize: "13px",
+                fontSize: "var(--text-caption)",
                 color: "var(--color-text-primary)",
               }}
             >

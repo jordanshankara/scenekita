@@ -67,7 +67,7 @@ export function PesananSayaList({ initialOrders, userEmail }: PesananSayaListPro
         }}
       >
         <div>
-          <span style={{ fontSize: "12px", color: "var(--color-text-muted)", display: "block" }}>
+          <span style={{ fontSize: "var(--text-caption)", color: "var(--color-text-muted)", display: "block" }}>
             Akun Penonton
           </span>
           <span style={{ fontSize: "var(--text-body)", fontWeight: 600, color: "var(--color-text-primary)" }}>
@@ -203,7 +203,7 @@ export function PesananSayaList({ initialOrders, userEmail }: PesananSayaListPro
                   <Badge variant={statusVariant[order.status] || "neutral"}>
                     {statusLabel[order.status] || order.status}
                   </Badge>
-                  <span style={{ fontSize: "12px", color: "var(--color-text-muted)" }}>
+                  <span style={{ fontSize: "var(--text-caption)", color: "var(--color-text-muted)" }}>
                     {formatTanggalLengkap(order.dibuatAt)}
                   </span>
                 </div>
@@ -241,7 +241,7 @@ export function PesananSayaList({ initialOrders, userEmail }: PesananSayaListPro
                   }}
                 >
                   <div>
-                    <span style={{ fontSize: "11px", color: "var(--color-text-muted)", display: "block", textTransform: "uppercase" }}>
+                    <span style={{ fontSize: "var(--text-caption)", color: "var(--color-text-muted)", display: "block", textTransform: "uppercase" }}>
                       Kode Booking
                     </span>
                     <span
@@ -261,8 +261,8 @@ export function PesananSayaList({ initialOrders, userEmail }: PesananSayaListPro
                     type="button"
                     onClick={() => handleCopy(order.kodeBooking, order.id)}
                     style={{
-                      height: "36px",
-                      padding: "0 var(--space-3)",
+                      height: "var(--touch-min)",
+                      padding: "0 var(--space-4)",
                       backgroundColor:
                         copiedId === order.id
                           ? "var(--color-status-success)"
@@ -276,12 +276,12 @@ export function PesananSayaList({ initialOrders, userEmail }: PesananSayaListPro
                           ? "none"
                           : "1px solid var(--color-border-default)",
                       borderRadius: "var(--radius-control)",
-                      fontSize: "12px",
+                      fontSize: "var(--text-caption)",
                       fontWeight: 600,
                       cursor: "pointer",
                       display: "inline-flex",
                       alignItems: "center",
-                      gap: "4px",
+                      gap: "6px",
                       transition: "all var(--duration-fast)",
                     }}
                   >
@@ -294,16 +294,16 @@ export function PesananSayaList({ initialOrders, userEmail }: PesananSayaListPro
                   <span style={{ fontSize: "var(--text-caption)", color: "var(--color-text-muted)" }}>
                     Kursi:
                   </span>
-                  <div style={{ display: "flex", flexWrap: "wrap", gap: "4px" }}>
+                  <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
                     {order.kursiList.map((k) => (
                       <span
                         key={k}
                         style={{
-                          padding: "2px 8px",
+                          padding: "4px 10px",
                           borderRadius: "4px",
                           backgroundColor: "var(--color-surface-elevated)",
                           color: "var(--color-text-primary)",
-                          fontSize: "12px",
+                          fontSize: "var(--text-caption)",
                           fontWeight: 700,
                           border: "1px solid var(--color-border-subtle)",
                         }}
@@ -403,7 +403,7 @@ function SisaWaktuStrip({ batasWaktu }: { batasWaktu: string }) {
           display: "flex",
           alignItems: "center",
           gap: "var(--space-2)",
-          fontSize: "12px",
+          fontSize: "var(--text-caption)",
         }}
       >
         <svg
@@ -447,7 +447,7 @@ function SisaWaktuStrip({ batasWaktu }: { batasWaktu: string }) {
         display: "flex",
         alignItems: "center",
         gap: "var(--space-2)",
-        fontSize: "12px",
+        fontSize: "var(--text-caption)",
       }}
     >
       <svg
