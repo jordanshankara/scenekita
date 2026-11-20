@@ -29,18 +29,54 @@ export function BookingForm({
   jamMulai,
   jamSelesai,
   initialKursiList,
-  kursiSedangDitahan,
+  kursiSedangDitahan: initialSedangDitahan,
 }: BookingFormProps) {
   const router = useRouter();
   const supabase = createClient();
 
   const [kursiList, setKursiList] = useState<KursiData[]>(initialKursiList);
   const [selectedKursi, setSelectedKursi] = useState<KursiData[]>([]);
+  const [kursiSedangDitahan, setKursiSedangDitahan] = useState<number>(initialSedangDitahan);
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   // Kuota maksimal 4 kursi per akun per jadwal (R2)
   const maxSelectable = Math.max(0, 4 - kursiSedangDitahan);
+
+  // Cek ulang kuota aktif milik akun yang sedang login saat komponen dimuat
+  React.useEffect(() => {
+    async function cekKuotaAkun() {
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) return;
+
+        const { data: pesananUser } = await supabase
+          .from("pesanan")
+          .select("id")
+          .eq("user_id", user.id)
+          .eq("jadwal_id", jadwalId)
+          .eq("status", "ditahan")
+          .gt("batas_waktu", new Date().toISOString());
+
+        const pesananIds = (pesananUser || []).map((p: any) => p.id);
+        if (pesananIds.length > 0) {
+          const { count } = await supabase
+            .from("pesanan_kursi")
+            .select("id", { count: "exact", head: true })
+            .in("pesanan_id", pesananIds)
+            .eq("aktif", true);
+
+          setKursiSedangDitahan(count || 0);
+        } else {
+          setKursiSedangDitahan(0);
+        }
+      } catch {
+        // Fallback ke nilai server
+      }
+    }
+
+    cekKuotaAkun();
+  }, [jadwalId]);
 
   // Refresh peta kursi terbaru dari database
   async function refreshPetaKursi() {

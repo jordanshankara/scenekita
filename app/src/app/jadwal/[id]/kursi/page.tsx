@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { createClient } from "@/lib/supabase/server";
 import { getUser } from "@/lib/auth";
 import Link from "next/link";
@@ -147,25 +149,29 @@ export default async function PilihKursiPage({ params }: KursiPageProps) {
     );
   }
 
-  // Hitung jumlah kursi berstatus Ditahan milik akun ini pada jadwal ini (R2)
+  // Hitung jumlah kursi berstatus Ditahan milik akun ini pada jadwal ini (R2) secara per-akun
   let kursiSedangDitahan = 0;
   try {
-    const { data: pesananAktif } = await supabase
+    const { data: pesananUser } = await supabase
       .from("pesanan")
-      .select("id, pesanan_kursi (id, aktif)")
+      .select("id")
       .eq("user_id", user.id)
       .eq("jadwal_id", id)
       .eq("status", "ditahan")
       .gt("batas_waktu", new Date().toISOString());
 
-    if (pesananAktif) {
-      pesananAktif.forEach((p: any) => {
-        const aktifList = (p.pesanan_kursi || []).filter((pk: any) => pk.aktif);
-        kursiSedangDitahan += aktifList.length;
-      });
+    const pesananIds = (pesananUser || []).map((p: any) => p.id);
+    if (pesananIds.length > 0) {
+      const { count } = await supabase
+        .from("pesanan_kursi")
+        .select("id", { count: "exact", head: true })
+        .in("pesanan_id", pesananIds)
+        .eq("aktif", true);
+
+      kursiSedangDitahan = count || 0;
     }
   } catch (err) {
-    console.error("[Cek Kuota Error]:", err);
+    console.error("[Cek Kuota Per-Akun Error]:", err);
   }
 
   const filmData = Array.isArray(jadwal.film) ? jadwal.film[0] : jadwal.film;
